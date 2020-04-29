@@ -1,6 +1,5 @@
 <template>
     <div>
-        Rows is {{ rows }}
         <div v-if="loading">
            Data is loading... 
         </div>
