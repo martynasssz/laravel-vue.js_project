@@ -8,11 +8,12 @@
               <div class="col d-flex align-items-stretch" 
               v-for="(bookable, column) in bookablesInRow(row)" 
               :key="'row' + row + column">
-            <bookable-list-item           
-              :item-title="bookable.title" 
-              :item-description="bookable.description" 
-              :price="1000">
-            </bookable-list-item> 
+              <bookable-list-item v-bind="bookable"></bookable-list-item>
+            <!-- <bookable-list-item   instead using 3 parameter we can use shorter        
+              :title="bookable.title"
+              :description="bookable.description" 
+              :id="bookable.id">
+            </bookable-list-item>  -->
               </div>  
               <div class="col" v-for="p in placeholdersInRow(row)" :key="'placeholder'+ row + p"></div> 
             </div>
