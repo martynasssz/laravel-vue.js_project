@@ -27,6 +27,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return Bookable::findOrFail($id); //try to find something or it will fail. With no found code if this not found in database.
 // });
 
-Route::get('bookables', 'Api\BookableController@index');
-Route::get('bookables/{id}', 'Api\BookableController@show');
+//Route::get('bookables', 'Api\BookableController@index');
+//Route::get('bookables/{id}', 'Api\BookableController@show');
+
+Route::apiResource('bookables', 'Api\BookableController')->only(['index', 'show']);
 
