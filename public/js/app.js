@@ -1959,7 +1959,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1990,6 +1989,22 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.loading = true;
+    var p = new Promise(function (resolve, reject) {
+      console.log(resolve);
+      console.log(reject);
+      setTimeout(function () {
+        return resolve("Hello");
+      }, 3000);
+    })
+    /*.then(result => console.log(`Success ${result}`))*/
+    .then(function (result) {
+      return "Hello again " + result;
+    }).then(function (result) {
+      return console.log(result);
+    })["catch"](function (result) {
+      return console.log("Error ".concat(result));
+    });
+    console.log(p);
     setTimeout(function () {
       _this.bookables = [{
         id: 1,
@@ -37780,7 +37795,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._v("\n    Rows is " + _vm._s(_vm.rows) + "\n    "),
     _vm.loading
       ? _c("div", [_vm._v("\n       Data is loading... \n    ")])
       : _c(

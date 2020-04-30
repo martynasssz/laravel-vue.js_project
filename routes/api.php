@@ -24,7 +24,9 @@ Route::get('bookables', function (Request $request){
 });
 
 Route::get('bookables/{id}', function (Request $request, $id) {
-    return Bookable::find($id);
+    //return Bookable::find($id);
+    return Bookable::findOrFail($id); //try to find something or it will fail. With no found code if this not found in database.
+    
 });
 
 
