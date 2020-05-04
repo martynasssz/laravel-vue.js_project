@@ -17,8 +17,8 @@ class CreateBookingsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
 
-            $table->data('from');
-            $table->data('to');
+            $table->date('from');
+            $table->date('to');
             
             $table->unsignedBigInteger('bookable_id')->index();
             $table->foreign('bookable_id')->references('id')->on('bookables');
