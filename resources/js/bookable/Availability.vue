@@ -11,16 +11,24 @@
                  class="form-control form-control-sm" 
                  placeholder="Start date"
                  v-model="from"
-                 >
+                 @keyup.enter="check"
+                 />
            </div>
 
             <div class="form-group col-md-6">
                <label for="to">To</label>
-               <input type="text" name="to" class="form-control form-control-sm" placeholder="End date" v-model="to">
+               <input
+                 type="text" 
+                 name="to" 
+                 class="form-control form-control-sm" 
+                 placeholder="End date" 
+                 v-model="to"
+                 @keyup.enter="check"
+                 />
            </div>
         </div>
 
-        <button class="btn btn-secondary btn-block">Check!</button>
+        <button class="btn btn-secondary btn-block" @click="check">Check!</button><!--v-on:click call check method-->
     </div>
 </template>
 
@@ -30,9 +38,14 @@ export default {
         return {   //return javascript object
             from: null,       //property //intitially it is null
             to: null          //property //intitially it is null
+        };
+    },
+    methods: {
+        check(){
+            alert("I will check something now");
         }
-    }
-}
+    },
+};
 </script>
 
 <style scoped>
