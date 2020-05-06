@@ -28,7 +28,7 @@
            </div>
         </div>
 
-        <button class="btn btn-secondary btn-block" @click="check">Check!</button><!--v-on:click call check method-->
+        <button class="btn btn-secondary btn-block" @click="check" :disabled="loading">Check!</button><!--v-on:click call check method-->
     </div>
 </template>
 
@@ -37,14 +37,33 @@ export default {
     data() {  //add method data
         return {   //return javascript object
             from: null,       //property //intitially it is null
-            to: null          //property //intitially it is null
+            to: null,          //property //intitially it is null
+            loading: false,
+            status: null,
+            errors:null
         };
     },
     methods: {
         check(){
-            alert("I will check something now");
+            this.loading = true;
+            this.errors = null;
+
+            axios.get(
+                `/api/bookables/${this.$route.params.id}/availability?from=${this.from}&to=${this.to}`
+            )
+            .then(response => {
+              this.status = response.status;  
+            }).catch(error => {
+              if (422 == error.response.status){
+                this.errors = error.response.data.errors;      
+              } 
+              this.status = error.response.status;
+            })
+            .then(() => (this.loading = false));
+
+
         }
-    },
+    }
 };
 </script>
 
