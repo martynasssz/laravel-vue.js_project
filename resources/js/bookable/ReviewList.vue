@@ -10,7 +10,7 @@
                <div class="col-md-6 d-flex justify-content-end">{{ review.rating }}</div>
             </div> 
             <div class="row">
-                <div class="col-md-12">{{ review.created_at }}</div>
+                <div class="col-md-12">{{ review.created_at | fromNow }}</div>
             </div>
             <div class="row pt-4 pb-4">
                 <div class="col-md-12">
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+//import moment from "moment"; //impor moment librarary
 export default {
     props: {
         bookableId: String
@@ -42,5 +43,10 @@ export default {
           .then(response => (this.reviews = response.data.data))
           .then(() => (this.loading = false));
     }
-}
+    // filters: {
+    //     fromNow(value) {
+    //         return moment(value).fromNow();
+    //     }
+    // }
+};
 </script>
