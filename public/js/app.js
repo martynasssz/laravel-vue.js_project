@@ -2276,6 +2276,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2284,7 +2291,8 @@ __webpack_require__.r(__webpack_exports__);
         content: null
       },
       existingReview: null,
-      loading: false
+      loading: false,
+      booking: null
     };
   },
   created: function created() {
@@ -2294,9 +2302,15 @@ __webpack_require__.r(__webpack_exports__);
     this.loading = true; // 1. Check is review already exitsts (in review table by id)
 
     axios.get("/api/reviews/".concat(this.$route.params.id)).then(function (response) {
-      return _this.existingReview = response.data.data;
-    })["catch"](function (err) {}).then(function () {
-      return _this.loading = false;
+      _this.existingReview = response.data.data;
+    })["catch"](function (err) {
+      if (err.response && err.response.status && 404 === err.response.status) {
+        return axios.get("/api/booking-by-review/".concat(_this.$route.params.id)).then(function (response) {
+          _this.booking = response.data.data;
+        });
+      }
+    }).then(function () {
+      _this.loading = false;
     }); // 2. Fetch a booking by a review key
     // 3. Store the review
   },
@@ -59955,7 +59969,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _vm.loading
-      ? _c("div", [_vm._v(" Loading...")])
+      ? _c("div", [_vm._v("Loading...")])
       : _c("div", [
           _vm.alreadyReviewed
             ? _c("div", [
@@ -59990,7 +60004,7 @@ var render = function() {
                   _c(
                     "label",
                     { staticClass: "text-muted", attrs: { for: "content" } },
-                    [_vm._v("Describe your experence with")]
+                    [_vm._v("Describe your expirience with")]
                   ),
                   _vm._v(" "),
                   _c("textarea", {
