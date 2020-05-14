@@ -30,7 +30,7 @@
 //import moment from "moment"; //impor moment librarary
 export default {
     props: {
-        bookableId: String
+        bookableId: [String, Number]
     },    
     data(){
         return {
