@@ -2312,6 +2312,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
  //from response.js file
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2327,7 +2334,8 @@ __webpack_require__.r(__webpack_exports__);
       booking: null,
       error: false,
       //general error state
-      errors: null
+      errors: null,
+      sending: false
     };
   },
   created: function created() {
@@ -2381,7 +2389,7 @@ __webpack_require__.r(__webpack_exports__);
 
       // 3. Store the review
       this.errors = null;
-      this.loading = true;
+      this.sending = true;
       axios.post("/api/reviews", this.review).then(function (response) {
         return console.log(response);
       })["catch"](function (err) {
@@ -2396,8 +2404,11 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.error = true; //when this error is true display a bomb
       }).then(function () {
-        return _this2.loading = false;
-      });
+        return _this2.sending = false;
+      }); //then finishe
+    },
+    errorFor: function errorFor(field) {
+      return null !== this.errors && this.errors[field] ? this.errors[field] : null;
     }
   }
 });
@@ -60202,52 +60213,74 @@ var render = function() {
                               1
                             ),
                             _vm._v(" "),
-                            _c("div", { staticClass: "form-group" }, [
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "text-muted",
-                                  attrs: { for: "content" }
-                                },
-                                [_vm._v("Describe your expirience with")]
-                              ),
-                              _vm._v(" "),
-                              _c("textarea", {
-                                directives: [
+                            _c(
+                              "div",
+                              { staticClass: "form-group" },
+                              [
+                                _c(
+                                  "label",
                                   {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.review.content,
-                                    expression: "review.content"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  name: "content",
-                                  cols: "30",
-                                  rows: "10"
-                                },
-                                domProps: { value: _vm.review.content },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                                    staticClass: "text-muted",
+                                    attrs: { for: "content" }
+                                  },
+                                  [_vm._v("Describe your expirience with")]
+                                ),
+                                _vm._v(" "),
+                                _c("textarea", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.review.content,
+                                      expression: "review.content"
                                     }
-                                    _vm.$set(
-                                      _vm.review,
-                                      "content",
-                                      $event.target.value
-                                    )
+                                  ],
+                                  staticClass: "form-control",
+                                  class: [
+                                    { "is-invalid": _vm.errorFor("content") }
+                                  ],
+                                  attrs: {
+                                    name: "content",
+                                    cols: "30",
+                                    rows: "10"
+                                  },
+                                  domProps: { value: _vm.review.content },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.review,
+                                        "content",
+                                        $event.target.value
+                                      )
+                                    }
                                   }
-                                }
-                              })
-                            ]),
+                                }),
+                                _vm._v(" "),
+                                _vm._l(_vm.errorFor("content"), function(
+                                  error,
+                                  index
+                                ) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      key: "content" + index,
+                                      staticClass: "invalid-feedback"
+                                    },
+                                    [_vm._v(_vm._s(error))]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
                             _vm._v(" "),
                             _c(
                               "button",
                               {
                                 staticClass: "btn btn-lg btn-primary btn-block",
-                                attrs: { disabled: _vm.loading },
+                                attrs: { disabled: _vm.sending },
                                 on: {
                                   click: function($event) {
                                     $event.preventDefault()

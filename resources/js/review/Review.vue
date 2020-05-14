@@ -37,13 +37,20 @@
                 rows="10"
                 class="form-control"
                 v-model="review.content"
+                :class="[{'is-invalid': errorFor('content')}]"
               ></textarea>
+              <div
+                class="invalid-feedback"
+                v-for="(error, index) in errorFor('content')"
+                :key="'content' + index"
+              >{{ error }}</div>
+
             </div>
 
             <button
               class="btn btn-lg btn-primary btn-block"
               @click.prevent="submit"
-              :disabled="loading"
+              :disabled="sending"
             >Submit</button>
           </div>
         </div>
@@ -67,7 +74,8 @@ export default {
       loading: false,
       booking: null,
       error: false, //general error state
-      errors: null
+      errors: null,
+      sending: false
 
       };
     },
@@ -127,7 +135,8 @@ export default {
     submit() {
       // 3. Store the review
       this.errors = null;
-      this.loading = true;
+      this.sending = true;      
+
       axios
         .post(`/api/reviews`, this.review)
         .then(response => console.log(response))
@@ -143,7 +152,12 @@ export default {
 
           this.error = true; //when this error is true display a bomb
         })
-        .then(() => (this.loading = false));
+        .then(() => (this.sending = false)); //then finishe
+    },
+    errorFor(field) {
+      return null !== this.errors && this.errors[field] 
+        ? this.errors[field] 
+        : null;
     }
   }
 };
