@@ -1,25 +1,24 @@
 <template>
   <div>
-    <div class="row" v-if="error">Unknown error has occured,, please try again later!</div>
+    <fatal-error v-if="error"></fatal-error>
     <div class="row" v-else>
       <div :class="[{'col-md-4': twoColumns}, {'d-none': oneColumn}]">
-      <div class="card">
-        <div class="card-body">
-          <div v-if="loading">Loading...</div>
-          <div v-if="hasBooking">
-            <p>
-            Stayed at <router-link :to="{name: 'bookable', params: { id: booking.bookable.bookable_id}}">
-              {{ booking.bookable.title }}
-            </router-link>
-            </p>
-            <p>
-              From {{ booking.from }} to {{ booking.to }}
-            </p>
+        <div class="card">
+          <div class="card-body">
+            <div v-if="loading">Loading...</div>
+            <div v-if="hasBooking">
+              <p>
+                Stayed at
+                <router-link
+                  :to="{name: 'bookable', params: { id: booking.bookable.bookable_id}}"
+                >{{ booking.bookable.title }}</router-link>
+              </p>
+              <p>From {{ booking.from }} to {{ booking.to }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div :class="[{'col-md-8': twoColumns}, {'col-md-12': oneColumn}]">
+      <div :class="[{'col-md-8': twoColumns}, {'col-md-12': oneColumn}]">
         <div v-if="loading">Loading...</div>
         <div v-else>
           <div v-if="alreadyReviewed">
@@ -41,17 +40,15 @@
               ></textarea>
             </div>
 
-            <button 
-              class="btn btn-lg btn-primary btn-block" 
+            <button
+              class="btn btn-lg btn-primary btn-block"
               @click.prevent="submit"
               :disabled="loading"
-              >Submit</button>
+            >Submit</button>
           </div>
         </div>
+      </div>
     </div>
-    </div>
-    
-    
   </div>
 </template>
 
@@ -59,10 +56,10 @@
 import { is404 } from "./../shared/utils/response"; //from response.js file
 
 export default {
-    data() {
+  data() {
     return {
-      id: null,
       review: {
+        id: null,
         rating: 5,
         content: null
       },
@@ -84,13 +81,14 @@ export default {
         })
         .catch(err => {
         if (is404(err)) {
+        // 2. Fetch a booking by a review key
           return axios
             .get(`/api/booking-by-review/${this.review.id}`)
             .then(response => {
               this.booking = response.data.data;
             })
             .catch(err => {
-              this.error =!is404(err);    ///----short expresion (cleanway)------////
+              this.error = !is404(err);    ///----short expresion (cleanway)------////
               //is404(err) ? {} : (this.error = true);  ///----short expresion------////
               
               // if (!is404(err)) {  ///----long expresion------////
@@ -99,11 +97,11 @@ export default {
             });
           }
           this.error = true;
-        })
-        .then(() => {
-          this.loading = false;
-        });
-      // 2. Fetch a booking by a review key
+      })
+      .then(() => {
+        this.loading = false;
+      });
+      
       // 3. Store the review
 
     },
@@ -122,17 +120,17 @@ export default {
       },
       twoColumns() {
         return this.loading || !this.alreadyReviewed;
-      }
+      } 
     },
     methods: {
-      submit() {
-        this.loading = true;
-        axios
-          .post(`/api/reviews`, this.review)
-          .then(response => console.log(response))
-          .catch(err => (this.error = true))
-          .then (() => (this.loading = false));
+    submit() {
+      this.loading = true;
+      axios
+        .post(`/api/reviews`, this.review)
+        .then(response => console.log(response))
+        .catch(err => (this.error = true))
+        .then(() => (this.loading = false));
     }
-  }   
+  }
 };
 </script>
