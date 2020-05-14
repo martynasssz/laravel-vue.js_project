@@ -42,8 +42,10 @@
 
 <script>
 import { is422 } from "./../shared/utils/response"; //from response.js file
+import validationErrors from "./../shared/mixins/validationErrors";
 
 export default {
+    mixins:[validationErrors],
     props: {
         bookableId: String
     },
@@ -52,8 +54,7 @@ export default {
             from: null,       //property //intitially it is null
             to: null,          //property //intitially it is null
             loading: false,
-            status: null,
-            errors:null
+            status: null            
         };
     },
     methods: {
@@ -74,10 +75,7 @@ export default {
           this.status = error.response.status;
         })
         .then(() => (this.loading = false));
-    },
-    errorFor(field) {
-      return this.hasErrors && this.errors[field] ? this.errors[field] : null;
-    }
+    }    
   },
   computed: {
     hasErrors() {
