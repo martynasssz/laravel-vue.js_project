@@ -23,6 +23,8 @@
 <script>
 import Availability from "./Availability";
 import ReviewList from "./ReviewList";
+import { mapState } from 'vuex';
+
 export default {
     components: { //property
         Availability,
@@ -31,7 +33,8 @@ export default {
     data(){ //get data from server
        return {  //return an object
             bookable: null,
-            loading: false
+            loading: false,
+            price: null
        }; 
     },
     created() { //create lifcycle hook
@@ -41,9 +44,23 @@ export default {
               this.loading = false;
         });          
     },
+    computed: mapState({
+        lastSearch: "lastSearch"
+    }),
     methods: {
-        checkPrice(hasAvailability) {
-            console.log(hasAvailability);
+        async checkPrice(hasAvailability) { //checking price from backend it shoud be async
+            if(!hasAvailability) {
+                this.price = null //no price to display
+                return;
+            }
+
+            try {
+                this.price = (await axios.get(
+                    `/api/bookables/${this.bookable.id}/price?from=${this.lastSearch.from}&to=${this.lastSearch.to}`
+                    )).data.data;
+            } catch (err) {
+              this.price = null;  
+            }
         }
     }
 };
