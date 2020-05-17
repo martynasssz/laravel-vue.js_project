@@ -2,6 +2,7 @@ import VueRouter from "vue-router";
 import Bookable from "./bookable/Bookable";
 import Bookables from "./bookables/Bookables";
 import Review from "./review/Review";
+import storeDefinition from "./store";
 
 
 const routes = [
