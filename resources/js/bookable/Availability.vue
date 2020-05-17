@@ -51,8 +51,8 @@ export default {
     },
     data() {  //add method data
         return {   //return javascript object
-            from: null,       //property //intitially it is null
-            to: null,          //property //intitially it is null
+            from: this.$store.state.lastSearch.from,       //property //intitially it is null
+            to: this.$store.state.lastSearch.to,          //property //intitially it is null
             loading: false,
             status: null            
         };
