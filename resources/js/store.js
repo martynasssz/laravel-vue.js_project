@@ -5,7 +5,7 @@ export default {
             to: null
         },
         basket: {
-            items:[]
+            items: []
         }
     },
     mutations: {
@@ -16,21 +16,36 @@ export default {
             state.basket.items.push(payload);
         },
         removeFromBasket(state, payload) {
-            state.basket.items = state.basket.items.filter(item =>item.bookable.id !== payload);
-
+            state.basket.items = state.basket.items.filter(item => item.bookable.id !== payload);
+        },
+        setBasket(state, payload) {
+            state.basket = payload;
         }
-
     },
     actions: {
         setLastSearch(context, payload) {
-              context.commit('setLastSearch', payload);
-              localStorage.setItem('lastSearch', JSON.stringify(payload));  
+            context.commit('setLastSearch', payload);
+            localStorage.setItem('lastSearch', JSON.stringify(payload));
         },
         loadStoredState(context) {
             const lastSearch = localStorage.getItem('lastSearch');
             if (lastSearch) {
                 context.commit('setLastSearch', JSON.parse(lastSearch));
             }
+
+            const basket = localStorage.getItem('basket');
+            if (basket) {
+                context.commit('setBasket', JSON.parse(basket));
+            }
+        },
+        addToBasket({ commit, state }, payload) {
+            // context.state, context.commit
+            commit('addToBasket', payload);
+            localStorage.setItem('basket', JSON.stringify(state.basket));
+        },
+        removeFromBasket() {
+            commit('removeFromBasket', payload);
+            localStorage.setItem('basket', JSON.stringify(state.basket));
         }
     },
     getters: {
@@ -39,8 +54,8 @@ export default {
             return function (id) {
                 return state.basket.items.reduce(
                     (result, item) => result || item.bookable.id === id,
-                     false
-                  );
+                    false
+                );
             }
         }
     }
