@@ -26,7 +26,7 @@
               </transition>
               
               <transition fade>                  
-                <button class="btn btn-outline-secondary btn-block" v-if="price">Book now</button>
+                <button class="btn btn-outline-secondary btn-block" v-if="price" @click="addToBasket">Book now</button>
               </transition>                
         </div>
     </div>
@@ -63,17 +63,24 @@ export default {
   }),
     methods: {
         async checkPrice(hasAvailability) {
-      if (!hasAvailability) {
-        this.price = null;
-        return;
-      }
-      try {
-        this.price = (await axios.get(
-          `/api/bookables/${this.bookable.id}/price?from=${this.lastSearch.from}&to=${this.lastSearch.to}`
-        )).data.data;
-      } catch (err) {
-        this.price = null;
-      }
+            if (!hasAvailability) {
+                this.price = null;
+                return;
+            }
+            try {
+                this.price = (await axios.get(
+                `/api/bookables/${this.bookable.id}/price?from=${this.lastSearch.from}&to=${this.lastSearch.to}`
+                )).data.data;
+            } catch (err) {
+                this.price = null;
+            }
+         },
+            addToBasket() {
+            this.$store.commit("addToBasket", {
+                bookable: this.bookable,
+                price: this.price,
+                dates: this.lastSearch
+            });
         }
     }
 };
