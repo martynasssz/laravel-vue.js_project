@@ -81,14 +81,12 @@ export default {
         )).status;
         this.$emit("availability", this.hasAvailability);
       } catch (err) {
-          if (is422(err)) {
-            this.errors = err.response.data.errors;
-          }
-
-          this.status = err.response.status;
-          this.$emit("availability", this.hasAvailability);
-      } 
-
+        if (is422(err)) {
+          this.errors = err.response.data.errors;
+        }
+        this.status = err.response.status;
+        this.$emit("availability", this.hasAvailability);
+      }
       this.loading = false;
     }    
   },
