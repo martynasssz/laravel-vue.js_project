@@ -17,6 +17,7 @@ class AddPriceAndAddressToBookingsTable extends Migration
             $table->unsignedInteger('price');
 
             $table->unsignedBigInteger('address_id')->index()->nullable();
+            $table->foreign('address_id'->references('id')->on('addresses'));
         });
     }
 
@@ -29,6 +30,9 @@ class AddPriceAndAddressToBookingsTable extends Migration
     {
         Schema::table('bookings', function (Blueprint $table) {
             $table->dropColumn('price');
+
+            $table->dropForeign(['address_id']);
+            $table->dropColumn('address_id');
         });
     }
 }
