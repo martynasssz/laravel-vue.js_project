@@ -17,7 +17,7 @@ class AddPriceAndAddressToBookingsTable extends Migration
             $table->unsignedInteger('price');
 
             $table->unsignedBigInteger('address_id')->index()->nullable();
-            $table->foreign('address_id'->references('id')->on('addresses'));
+            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 
