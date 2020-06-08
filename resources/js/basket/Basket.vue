@@ -136,14 +136,15 @@ export default {
       this.loading = true;  
       
       try {
-          await axios.post(`/api/checkout`, {
-              customer: this.customer,
-              bookings: this.basket.map(basketItem => ({
-                  bookable_id: basketItem.bookable.id,
-                  from: basketItem.dates.from,
-                  to: basketItem.dates.to
-              }))
-          });
+        await axios.post(`/api/checkout`, {
+            customer: this.customer,
+            bookings: this.basket.map(basketItem => ({
+                bookable_id: basketItem.bookable.id,
+                from: basketItem.dates.from,
+                to: basketItem.dates.to
+            }))
+        });
+        this.$store.dispatch("clearBasket");
       } catch (err) {}
 
       this.loading = false;
