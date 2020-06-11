@@ -54,6 +54,7 @@
 
 <script>
 import validationErrors from "../shared/mixins/validationErrors";
+import { logIn } from "./../shared/utils/auth";
 export default {
     mixins: [validationErrors],
         data() {
@@ -68,17 +69,19 @@ export default {
             this.loading =true;
             this.errors =null;
               
-              try {
-                await axios.get('/sanctum/csrf-cookie');
-                await axios.post("/login", {
-                  email: this.email,
-                  password: this.password
-                });  
-                await axios.get('/user');
-              } catch (error) {
-                  this.errors = error.response && error.response.data.errors;
-
-              }
+            try {
+              await axios.get("/sanctum/csrf-cookie");
+              await axios.post("/login", {
+                email: this.email,
+                password: this.password
+              }); 
+                
+              logIn();
+              this.$store.dispatch("loadUser");
+              this.$router.push({ name: "home" });
+            } catch (error) {
+              this.errors = error.response && error.response.data.errors;
+            }  
 
             this.loading=false;
         }
