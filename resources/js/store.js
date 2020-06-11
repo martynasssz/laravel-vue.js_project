@@ -6,7 +6,10 @@ export default {
         },
         basket: {
             items: []
-        }
+        },
+        isLoggedIn:false,
+        user: {}
+
     },
     mutations: {
         setLastSearch(state, payload) {
